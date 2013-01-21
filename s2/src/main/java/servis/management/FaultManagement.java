@@ -9,13 +9,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import servis.client.ClientData;
+import servis.electronics.Fault;
 
 
 
 
 
-public class ClientManagement implements ManagementInterface<ClientData> {
+public class FaultManagement implements ManagementInterface<Fault> {
 Connection conn;
 	
 	private String url = "jdbc:postgresql://localhost:5432/postgres";
@@ -26,12 +26,12 @@ Connection conn;
 			
  
 	Statement statement;
-	PreparedStatement addClientDataStatement;
-	PreparedStatement deleteClientDataStatement;
-	PreparedStatement getAllClientDataStatement;
-	PreparedStatement getClientDataByIdStatement;
+	PreparedStatement addFaultStatement;
+	PreparedStatement deleteFaultStatement;
+	PreparedStatement getAllFaultStatement;
+	PreparedStatement getFaultByIdStatement;
 	
-	public ClientManagement() {
+	public FaultManagement() {
 		try {
 			conn = DriverManager.getConnection(url, login, password);
 			statement = conn.createStatement();
@@ -50,15 +50,15 @@ Connection conn;
 			if(!tableExists)
 				statement.executeUpdate(createTable);
 
-			addClientDataStatement = conn
+			addFaultStatement = conn
 					.prepareStatement(
 							"INSERT INTO Pacjent (name, surname, address, phone) " +
 							"VALUES (?, ?, ?, ?)");
-			deleteClientDataStatement=conn
+			deleteFaultStatement=conn
 					.prepareStatement("delete from client where surname=?");
-			getAllClientDataStatement = conn
+			getAllFaultStatement = conn
 					.prepareStatement("select * from client");
-			getClientDataByIdStatement=conn
+			getFaultByIdStatement=conn
 					.prepareStatement("select * from client where client=?");
 
 		} catch (SQLException e) {
@@ -70,18 +70,26 @@ Connection conn;
 	public Connection getConnection(){
 		return conn;
 	}
-	
+	/*
+	 this.description_fault = description_fault;
+		this.date_solution_fault =  date_solution_fault;
+		this.what_do = what_do;
+		
+		
+	 * (non-Javadoc)
+	 * @see servis.management.ManagementInterface#get(long)
+	 */
 	
 	// @Override fytj
-	public ClientData get(long id) {
+	public Fault get(long id) {
 	
-	ClientData result = null;
+	Fault result = null;
 		
 	try {
-		getClientDataByIdStatement.setLong(1, id);
-		ResultSet rs = getClientDataByIdStatement.executeQuery();
+		getFaultByIdStatement.setLong(1, id);
+		ResultSet rs = getFaultByIdStatement.executeQuery();
 		while(rs.next()){
-			result = new ClientData(rs.getString("name"),rs.getString("surname"),rs.getString("address"),rs.getInt("phone"));
+			result = new Fault(rs.getString("description_fault"),rs.getString("date_solution_fault"),rs.getString("what_do"));
 			break;
 		}
 		return result;
@@ -92,13 +100,13 @@ Connection conn;
 }	
 
 	// @Override fytj
-	public List<ClientData> getAll() {
-		List<ClientData> result= new ArrayList<ClientData>();
+	public List<Fault> getAll() {
+		List<Fault> result= new ArrayList<Fault>();
 	
 	try {
-		ResultSet rs= getAllClientDataStatement.executeQuery();
+		ResultSet rs= getAllFaultStatement.executeQuery();
 		while(rs.next())
-			result.add(new ClientData(rs.getString("name"),rs.getString("surname"),rs.getString("address"),rs.getInt("phone")));
+			result.add(new Fault(rs.getString("description_fault"),rs.getString("date_solution_fault"),rs.getString("What_do")));
 		
 		return result;
 		
@@ -109,23 +117,23 @@ Connection conn;
 	
 }
 	// @Override fytj
-	public boolean save(ClientData obj) {
+	public boolean save(Fault obj) {
 		try {
-			addClientDataStatement.setString(1, obj.getName());
-			addClientDataStatement.setString(2, obj.getSurname());
-			addClientDataStatement.setString(3, obj.getAddress());
-			addClientDataStatement.setInt(4, obj.getPhone());
-			return addClientDataStatement.execute();
+			addFaultStatement.setString(1, obj.getDescription_fault());
+			addFaultStatement.setString(2, obj.getDate_solution_fault());
+			addFaultStatement.setString(3, obj.getWhat_do());
+			
+			return addFaultStatement.execute();
 		} catch (SQLException e){
 			e.printStackTrace();
 		}
 		return false;
 	}
 	// @Override fytj
-	public boolean delete(ClientData obj) {
+	public boolean delete(Fault obj) {
 		try {
-			deleteClientDataStatement.setString(1, obj.getAddress());
-			deleteClientDataStatement.executeUpdate();
+			deleteFaultStatement.setString(1, obj.getWhat_do());
+			deleteFaultStatement.executeUpdate();
 		} catch (SQLException e){
 			e.printStackTrace();
 		}

@@ -21,8 +21,7 @@ Connection conn;
 	private String password = "postgres";
 	private String login = "postgres";
 
-	String createTable =
-			";
+	String createTable ="";
  
 	Statement statement;
 	PreparedStatement addWorkerDataStatement;

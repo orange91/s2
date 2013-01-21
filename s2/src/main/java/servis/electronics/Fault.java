@@ -32,8 +32,7 @@ public class Fault {
 		this.description_fault = description_fault;
 		this.date_solution_fault =  date_solution_fault;
 		this.what_do = what_do;
-		//this.id_pacjenta = id_pacjenta;
-		//this.id_lekarza = id_lekarza;
+		
 	}
 	
 	public Fault(int id_fault) {
@@ -44,7 +43,7 @@ public class Fault {
 		return id_fault;
 	}
 	public void setIdFault(int id_fault) {
-		this.id_fault = id_fault;
+		this.id_fault = id_fault; 
 	}
 	public String getDescription_fault() {
 		return description_fault;
