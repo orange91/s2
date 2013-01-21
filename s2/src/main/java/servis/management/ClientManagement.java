@@ -23,13 +23,7 @@ Connection conn;
 	private String login = "postgres";
 
 	String createTable =
-			"CREATE TABLE Pacjent(" +
-			"id serial not null," +
-			"imie varchar(32) not null, " +
-			"nazwisko varchar(64) not null," +
-			"adres varchar(64) not null," +
-			"telefon varchar(16) not null," +
-			"CONSTRAINT Pacjent_pk PRIMARY KEY(id))";
+			";
  
 	Statement statement;
 	PreparedStatement addClientDataStatement;
