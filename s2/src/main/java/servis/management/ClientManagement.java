@@ -16,7 +16,8 @@ import servis.client.ClientData;
 
 
 public class ClientManagement implements ManagementInterface<ClientData> {
-Connection connection;
+
+private Connection connection;
 	
 	private String url = "jdbc:postgresql://localhost:5432/postgres";
 	private String password = "postgres";
@@ -27,7 +28,7 @@ Connection connection;
 	    	"name            		varchar(32)   	not null,"+
 	   		"surname         		varchar(32)   	not null,"+
 	    	"address            		varchar(100)  	not null,"+
-	    	"phone	     		int           	not null,"+	 
+	    	"phone	     		varchar(10)          	not null,"+	 
 	    	"comments            	varchar(120),"+
 	    	"CONSTRAINT		client_id_pk PRIMARY KEY(id)"+
 	");";
@@ -37,7 +38,7 @@ Connection connection;
 	    	name            		varchar(32)   	not null,
 	   		surname         		varchar(32)   	not null,
 	    	address            		varchar(100)  	not null,
-	    	phone	     		int           	not null,
+	    	phone	     			           	not null,
 	    	comments            	varchar(120),
 		CONSTRAINT		client_id_pk PRIMARY KEY(id)
 	);
@@ -71,7 +72,7 @@ Connection connection;
 
 			addClientDataStatement = connection
 					.prepareStatement(
-							"INSERT INTO Pacjent (name, surname, address, phone) " +
+							"INSERT INTO client (name, surname, address, phone) " +
 							"VALUES (?, ?, ?, ?)");
 			deleteClientDataStatement = connection
 					.prepareStatement("delete from client where surname=?");
@@ -90,9 +91,8 @@ Connection connection;
 		return connection;
 	}
 	
-	
-	// @Override fytj
-	public ClientData get(long id) {
+@Override 	
+public ClientData get(long id) {
 	
 	ClientData result = null;
 		
@@ -100,7 +100,7 @@ Connection connection;
 		getClientDataByIdStatement.setLong(1, id);
 		ResultSet rs = getClientDataByIdStatement.executeQuery();
 		while(rs.next()){
-			result = new ClientData(rs.getString("name"),rs.getString("surname"),rs.getString("address"),rs.getInt("phone"));
+			result = new ClientData(rs.getString("name"),rs.getString("surname"),rs.getString("address"),rs.getString("phone"));
 			break;
 		}
 		return result;
@@ -110,14 +110,14 @@ Connection connection;
 	}
 }	
 
-	// @Override fytj
+	@Override // fytj
 	public List<ClientData> getAll() {
 		List<ClientData> result= new ArrayList<ClientData>();
 	
 	try {
 		ResultSet rs= getAllClientDataStatement.executeQuery();
 		while(rs.next())
-			result.add(new ClientData(rs.getString("name"),rs.getString("surname"),rs.getString("address"),rs.getInt("phone")));
+			result.add(new ClientData(rs.getString("name"),rs.getString("surname"),rs.getString("address"),rs.getString("phone")));
 		
 		return result;
 		
@@ -127,20 +127,20 @@ Connection connection;
 	}
 	
 }
-	// @Override fytj
+@Override //fytj
 	public boolean save(ClientData obj) {
 		try {
 			addClientDataStatement.setString(1, obj.getName());
 			addClientDataStatement.setString(2, obj.getSurname());
 			addClientDataStatement.setString(3, obj.getAddress());
-			addClientDataStatement.setInt(4, obj.getPhone());
+			addClientDataStatement.setString(4, obj.getPhone());
 			return addClientDataStatement.execute();
 		} catch (SQLException e){
 			e.printStackTrace();
 		}
 		return false;
 	}
-	// @Override fytj
+@Override //fytj
 	public boolean delete(ClientData obj) {
 		try {
 			deleteClientDataStatement.setString(1, obj.getAddress());

@@ -6,7 +6,7 @@ public class ClientData {
 	private String name;
 	private String surname;
 	private String address;
-	private int phone;
+	private String phone;
 	
 	/*	﻿CREATE TABLE client
 	(
@@ -20,7 +20,7 @@ public class ClientData {
 	);
 
 	 */
-	public ClientData(String name, String surname, String address, int phone) {
+	public ClientData(String name, String surname, String address, String phone) {
 		this.name = name;
 		this.surname = surname;
 		this.address = address;
@@ -49,10 +49,10 @@ public class ClientData {
 	public void setSurname(String surname) {
 		this.surname = surname;
 	}
-	public int getPhone() {
+	public String getPhone() {
 		return phone;
 	}
-	public void setPhone(int phone) {
+	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 	public String getAddress() {
