@@ -16,14 +16,33 @@ import servis.client.ClientData;
 
 
 public class ClientManagement implements ManagementInterface<ClientData> {
-Connection conn;
+Connection connection;
 	
 	private String url = "jdbc:postgresql://localhost:5432/postgres";
 	private String password = "postgres";
 	private String login = "postgres";
 
-	String createTable ="";
-			
+	String createTable ="CREATE TABLE client ("+
+	    	"id            	serial,"+
+	    	"name            		varchar(32)   	not null,"+
+	   		"surname         		varchar(32)   	not null,"+
+	    	"address            		varchar(100)  	not null,"+
+	    	"phone	     		int           	not null,"+	 
+	    	"comments            	varchar(120),"+
+	    	"CONSTRAINT		client_id_pk PRIMARY KEY(id)"+
+	");";
+	/*	﻿CREATE TABLE client
+	(
+	    	id            	serial,
+	    	name            		varchar(32)   	not null,
+	   		surname         		varchar(32)   	not null,
+	    	address            		varchar(100)  	not null,
+	    	phone	     		int           	not null,
+	    	comments            	varchar(120),
+		CONSTRAINT		client_id_pk PRIMARY KEY(id)
+	);
+
+	 */
  
 	Statement statement;
 	PreparedStatement addClientDataStatement;
@@ -33,10 +52,10 @@ Connection conn;
 	
 	public ClientManagement() {
 		try {
-			conn = DriverManager.getConnection(url, login, password);
-			statement = conn.createStatement();
+			connection = DriverManager.getConnection(url, login, password);
+			statement = connection.createStatement();
 
-			ResultSet rs = conn.getMetaData().getTables(null, null, null, null);
+			ResultSet rs = connection.getMetaData().getTables(null, null, null, null);
 			
 			boolean tableExists = false;
 			
@@ -50,16 +69,16 @@ Connection conn;
 			if(!tableExists)
 				statement.executeUpdate(createTable);
 
-			addClientDataStatement = conn
+			addClientDataStatement = connection
 					.prepareStatement(
 							"INSERT INTO Pacjent (name, surname, address, phone) " +
 							"VALUES (?, ?, ?, ?)");
-			deleteClientDataStatement=conn
+			deleteClientDataStatement = connection
 					.prepareStatement("delete from client where surname=?");
-			getAllClientDataStatement = conn
+			getAllClientDataStatement = connection
 					.prepareStatement("select * from client");
-			getClientDataByIdStatement=conn
-					.prepareStatement("select * from client where client=?");
+			getClientDataByIdStatement = connection
+					.prepareStatement("select * from client where id=?");
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -68,7 +87,7 @@ Connection conn;
 	}
 	
 	public Connection getConnection(){
-		return conn;
+		return connection;
 	}
 	
 	

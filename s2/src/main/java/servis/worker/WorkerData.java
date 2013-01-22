@@ -4,7 +4,7 @@ package servis.worker;
 
 public class WorkerData {
 	
-	private int id_worker;
+	private int id;
 	private String name;
 	private String surname;
 	private String address;
@@ -13,7 +13,7 @@ public class WorkerData {
 	
 	/*	﻿CREATE TABLE worker
 	(
-	    	id_worker            	serial,
+	    	id          	serial,
 	    	name            		varchar(32)   	not null,
 	   		surname         		varchar(32)   	not null,
 	    	address            		varchar(100)  	not null,
@@ -35,10 +35,10 @@ public class WorkerData {
 	}
 	
 	public long getIdWorker() {
-		return id_worker;
+		return id;
 	}
-	public void setIdWorker(int id_worker) {
-		this.id_worker = id_worker;
+	public void setIdWorker(int id) {
+		this.id = id;
 	}
 	public String getName() {
 		return name;
@@ -66,11 +66,12 @@ public class WorkerData {
 	}
 	
 	/// PO CO ??? 
+	/*
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (int) (id_worker ^ (id_worker >>> 32));
+		result = prime * result + (int) (id ^ (id >>> 32));
 		return result;
 	}
 	@Override
@@ -82,8 +83,8 @@ public class WorkerData {
 		if (getClass() != obj.getClass())
 			return false;
 		WorkerData other = (WorkerData) obj;
-		if (id_worker != other.id_worker)
+		if (id!= other.id)
 			return false;
 		return true;
-	}
+	}*/
 }

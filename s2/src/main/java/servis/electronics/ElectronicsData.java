@@ -28,6 +28,17 @@ public class ElectronicsData {
 	CONSTRAINT id_worker_fk FOREIGN KEY(id_worker) REFERENCES worker(id) ON UPDATE CASCADE ON DELETE SET NULL,
 	CONSTRAINT id_fault_fk FOREIGN KEY(id_fault) REFERENCES fault(id) ON UPDATE CASCADE ON DELETE SET NULL;
 		 */
+	
+	/*
+ 	id				 serial,
+    nr_serial        varchar(20)    not null,
+    model            varchar(20)    not null,
+    extend           varchar(200),
+    e_name           varchar(30)    not null,
+    id_client		 int 			not null,
+	id_worker 		 int 			not null, 
+	id_fault		 int			not null,
+ */
 	private long id;//long id
 	private String nr_serial;
 	private String model;

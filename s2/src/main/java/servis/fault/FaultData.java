@@ -1,4 +1,4 @@
-package servis.electronics;
+package servis.fault;
 
 /*
 import java.util.Date;
@@ -9,7 +9,7 @@ import servis.client.ClientData;
 import servis.worker.WorkerData;
 import servis.electronics.ElectronicsData;
 */
-public class Fault {
+public class FaultData {
 	
 	/*
 	 CREATE TABLE fault
@@ -22,28 +22,28 @@ public class Fault {
     CONSTRAINT        fault_id_fault_pk PRIMARY KEY(id_fault)
 );
 	 */
-	private int id_fault;
+	private int id;
 	private String description_fault;
 	private String date_solution_fault;
 	private String what_do;
 	
 	
-	public Fault(String description_fault, String date_solution_fault, String what_do) {
+	public FaultData(String description_fault, String date_solution_fault, String what_do) {
 		this.description_fault = description_fault;
 		this.date_solution_fault =  date_solution_fault;
 		this.what_do = what_do;
 		
 	}
 	
-	public Fault(int id_fault) {
-		this.id_fault = id_fault;
+	public FaultData(int id) {
+		this.id = id;
 	}
 	
 	public long getIdFault() {
-		return id_fault;
+		return id;
 	}
-	public void setIdFault(int id_fault) {
-		this.id_fault = id_fault; 
+	public void setIdFault(int id) {
+		this.id = id; 
 	}
 	public String getDescription_fault() {
 		return description_fault;

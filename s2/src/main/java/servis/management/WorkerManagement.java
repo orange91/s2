@@ -15,13 +15,21 @@ import servis.worker.WorkerData;
 
 
 public class WorkerManagement implements ManagementInterface<WorkerData>{
-Connection conn;
+Connection connection;
 	
 	private String url = "jdbc:postgresql://localhost:5432/postgres";
 	private String password = "postgres";
 	private String login = "postgres";
 
-	String createTable ="";
+	String createTable ="CREATE TABLE worker ("+
+	    			"id          	serial,"+
+	    			"name            		varchar(32)   	not null,"+
+	   				"surname         		varchar(32)   	not null,"+
+					"address            		varchar(100)  	not null,"+
+	    			"phone	 	    		int           	not null,"+
+	    			"comments            	varchar(120),"+
+					"CONSTRAINT				worker_id_pk PRIMARY KEY(id)"+
+					");";
  
 	Statement statement;
 	PreparedStatement addWorkerDataStatement;
@@ -29,17 +37,29 @@ Connection conn;
 	PreparedStatement getAllWorkerDataStatement;
 	PreparedStatement getWorkerDataByIdStatement;
 	
+	/*	﻿CREATE TABLE worker
+	(
+	    	id          	serial,
+	    	name            		varchar(32)   	not null,
+	   		surname         		varchar(32)   	not null,
+	    	address            		varchar(100)  	not null,
+	    	phone	 	    		int           	not null,
+	    	comments            	varchar(120),
+		CONSTRAINT		worker_id_worker_pk PRIMARY KEY(id_worker)
+	);
+
+	 */
 	public WorkerManagement() {
 		try {
-			conn = DriverManager.getConnection(url, login, password);
-			statement = conn.createStatement();
+			connection = DriverManager.getConnection(url, login, password);
+			statement = connection.createStatement();
 
-			ResultSet rs = conn.getMetaData().getTables(null, null, null, null);
+			ResultSet rs = connection.getMetaData().getTables(null, null, null, null);
 			
 			boolean tableExists = false;
 			
 			while (rs.next()) {
-				if ("Worker".equalsIgnoreCase(rs.getString("TABLE_NAME"))) {
+				if ("worker".equalsIgnoreCase(rs.getString("TABLE_NAME"))) {
 					tableExists = true;
 					break;
 				}
@@ -48,16 +68,16 @@ Connection conn;
 			if(!tableExists)
 				statement.executeUpdate(createTable);
 
-			addWorkerDataStatement = conn
+			addWorkerDataStatement = connection
 					.prepareStatement(
-							"INSERT INTO Pacjent (name, surname, address, phone) " +
+							"INSERT INTO worker (name, surname, address, phone) " +
 							"VALUES (?, ?, ?, ?)");
-			deleteWorkerDataStatement=conn
-					.prepareStatement("delete from Worker where surname=?");
-			getAllWorkerDataStatement = conn
-					.prepareStatement("select * from Worker");
-			getWorkerDataByIdStatement=conn
-					.prepareStatement("select * from Worker where Worker=?");
+			deleteWorkerDataStatement = connection
+					.prepareStatement("delete from worker where surname=?");
+			getAllWorkerDataStatement = connection
+					.prepareStatement("select * from worker");
+			getWorkerDataByIdStatement = connection
+					.prepareStatement("select * from worker where id=?");
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -66,7 +86,7 @@ Connection conn;
 	}
 	
 	public Connection getConnection(){
-		return conn;
+		return connection;
 	}
 	
 	

@@ -9,22 +9,42 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import servis.electronics.Fault;
+import servis.fault.FaultData;
 
 
 
+/*
+ CREATE TABLE fault
+(
+id_fault        		serial,
+description_fault       varchar(500)    not null,
+date_solution_fault    	date,
+what_do       			varchar(300),
+extend            		varchar(200),
+CONSTRAINT        fault_id_fault_pk PRIMARY KEY(id_fault)
+);
+ */
 
 
-public class FaultManagement implements ManagementInterface<Fault> {
-Connection conn;
+
+public class FaultManagement implements ManagementInterface<FaultData> {
+Connection connection;
 	
 	private String url = "jdbc:postgresql://localhost:5432/postgres";
 	private String password = "postgres";
 	private String login = "postgres";
 
-	String createTable ="";
-			
- 
+	String createTable = "CREATE TABLE fault ("+
+						 "id		       	 serial,"+
+						 "description_fault  varchar(500)    not null,"+
+						 "date_solution_fault    	date,"+
+						 "what_do  			 varchar(300),"+
+						 "extend      		varchar(200),"+
+						 "CONSTRAINT        fault_id_fault_pk PRIMARY KEY(id_fault)"+
+						 ");";
+
+	
+	
 	Statement statement;
 	PreparedStatement addFaultStatement;
 	PreparedStatement deleteFaultStatement;
@@ -33,10 +53,10 @@ Connection conn;
 	
 	public FaultManagement() {
 		try {
-			conn = DriverManager.getConnection(url, login, password);
-			statement = conn.createStatement();
+			connection = DriverManager.getConnection(url, login, password);
+			statement = connection.createStatement();
 
-			ResultSet rs = conn.getMetaData().getTables(null, null, null, null);
+			ResultSet rs = connection.getMetaData().getTables(null, null, null, null);
 			
 			boolean tableExists = false;
 			
@@ -50,16 +70,16 @@ Connection conn;
 			if(!tableExists)
 				statement.executeUpdate(createTable);
 
-			addFaultStatement = conn
+			addFaultStatement = connection
 					.prepareStatement(
-							"INSERT INTO Pacjent (name, surname, address, phone) " +
-							"VALUES (?, ?, ?, ?)");
-			deleteFaultStatement=conn
-					.prepareStatement("delete from client where surname=?");
-			getAllFaultStatement = conn
-					.prepareStatement("select * from client");
-			getFaultByIdStatement=conn
-					.prepareStatement("select * from client where client=?");
+							"INSERT INTO xxxxxxx (description_fault, date_solution_fault, what_do) " +
+							"VALUES (?, ?, ?)");
+			deleteFaultStatement = connection
+					.prepareStatement("delete from fault where id=?");
+			getAllFaultStatement = connection
+					.prepareStatement("select * from fault");
+			getFaultByIdStatement = connection
+					.prepareStatement("select * from fault where id=?");
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -68,7 +88,7 @@ Connection conn;
 	}
 	
 	public Connection getConnection(){
-		return conn;
+		return connection;
 	}
 	/*
 	 this.description_fault = description_fault;
@@ -81,15 +101,15 @@ Connection conn;
 	 */
 	
 	// @Override fytj
-	public Fault get(long id) {
+	public FaultData get(long id) {
 	
-	Fault result = null;
+	FaultData result = null;
 		
 	try {
 		getFaultByIdStatement.setLong(1, id);
 		ResultSet rs = getFaultByIdStatement.executeQuery();
 		while(rs.next()){
-			result = new Fault(rs.getString("description_fault"),rs.getString("date_solution_fault"),rs.getString("what_do"));
+			result = new FaultData(rs.getString("description_fault"),rs.getString("date_solution_fault"),rs.getString("what_do"));
 			break;
 		}
 		return result;
@@ -100,13 +120,13 @@ Connection conn;
 }	
 
 	// @Override fytj
-	public List<Fault> getAll() {
-		List<Fault> result= new ArrayList<Fault>();
+	public List<FaultData> getAll() {
+		List<FaultData> result= new ArrayList<FaultData>();
 	
 	try {
 		ResultSet rs= getAllFaultStatement.executeQuery();
 		while(rs.next())
-			result.add(new Fault(rs.getString("description_fault"),rs.getString("date_solution_fault"),rs.getString("What_do")));
+			result.add(new FaultData(rs.getString("description_fault"),rs.getString("date_solution_fault"),rs.getString("What_do")));
 		
 		return result;
 		
@@ -117,7 +137,7 @@ Connection conn;
 	
 }
 	// @Override fytj
-	public boolean save(Fault obj) {
+	public boolean save(FaultData obj) {
 		try {
 			addFaultStatement.setString(1, obj.getDescription_fault());
 			addFaultStatement.setString(2, obj.getDate_solution_fault());
@@ -130,7 +150,7 @@ Connection conn;
 		return false;
 	}
 	// @Override fytj
-	public boolean delete(Fault obj) {
+	public boolean delete(FaultData obj) {
 		try {
 			deleteFaultStatement.setString(1, obj.getWhat_do());
 			deleteFaultStatement.executeUpdate();

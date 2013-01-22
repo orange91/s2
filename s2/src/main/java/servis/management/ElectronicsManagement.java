@@ -14,7 +14,7 @@ import servis.electronics.ElectronicsData;
 public class ElectronicsManagement implements ManagementInterface<ElectronicsData>{
 
 /*
- * id_electronics   serial,
+ 	id				 serial,
     nr_serial        varchar(20)    not null,
     model            varchar(20)    not null,
     extend           varchar(200),
@@ -25,13 +25,22 @@ public class ElectronicsManagement implements ManagementInterface<ElectronicsDat
  */
 
 
-Connection conn;
+Connection connection;
 	
 	private String url = "jdbc:postgresql://localhost:5432/postgres";
 	private String password = "postgres";
 	private String login = "postgres";
 
-	String createTable ="";
+	String createTable =" CREATE TABLE electronics" +
+						"id				 serial,"+
+    "nr_serial        varchar(20)    not null,"+
+    "model            varchar(20)    not null,"+
+    "extend           varchar(200),"+
+    "e_name           varchar(30)    not null,"+
+    "id_client		 int 			not null,"+
+	"id_worker 		 int 			not null,"+
+	"id_fault		 int			not null,"+
+	");";
 			
 	Statement statement;
 	PreparedStatement addElectronicsDataStatement;
@@ -41,10 +50,10 @@ Connection conn;
 	
 	public ElectronicsManagement() {
 		try {
-			conn = DriverManager.getConnection(url, login, password);
-			statement = conn.createStatement();
+			connection = DriverManager.getConnection(url, login, password);
+			statement = connection.createStatement();
 
-			ResultSet rs = conn.getMetaData().getTables(null, null, null, null);
+			ResultSet rs = connection.getMetaData().getTables(null, null, null, null);
 			
 			boolean tableExists = false;
 			
@@ -58,17 +67,26 @@ Connection conn;
 			if(!tableExists)
 				statement.executeUpdate(createTable);
 
-			addElectronicsDataStatement = conn
+			addElectronicsDataStatement = connection
 					.prepareStatement(
-							"INSERT INTO Pacjent (name, surname, address, phone) " +
-							"VALUES (?, ?, ?, ?)");
-			deleteElectronicsDataStatement=conn
-					.prepareStatement("delete from client where surname=?");
-			getAllElectronicsDataStatement = conn
-					.prepareStatement("select * from client");
-			getElectronicsDataByIdStatement=conn
-					.prepareStatement("select * from client where client=?");
-
+							"INSERT INTO elecronics (nr_serial, model, e_name, id_client, id_worker, id_fault) " +
+							"VALUES (?, ?, ?, ?, ?, ?)");
+			deleteElectronicsDataStatement=connection
+					.prepareStatement("delete from electronics where id=?");
+			getAllElectronicsDataStatement = connection
+					.prepareStatement("select * from electronics");
+			getElectronicsDataByIdStatement=connection
+					.prepareStatement("select * from electronics where id_client=?");
+			/*
+		 	id				 serial,
+		    nr_serial        varchar(20)    not null,
+		    model            varchar(20)    not null,
+		    extend           varchar(200),
+		    e_name           varchar(30)    not null,
+		    id_client		 int 			not null,
+			id_worker 		 int 			not null, 
+			id_fault		 int			not null,
+		 */
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -76,7 +94,7 @@ Connection conn;
 	}
 	
 	public Connection getConnection(){
-		return conn;
+		return connection;
 	}
 	/*
 	 this.description_fault = description_fault;
