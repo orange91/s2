@@ -37,10 +37,10 @@ Connection connection;
 	String createTable = "CREATE TABLE fault ("+
 						 "id		       	 serial,"+
 						 "description_fault  varchar(500)    not null,"+
-						 "date_solution_fault    	date,"+
+						 "date_solution_fault    	varchar(20),"+
 						 "what_do  			 varchar(300),"+
 						 "extend      		varchar(200),"+
-						 "CONSTRAINT        fault_id_fault_pk PRIMARY KEY(id_fault)"+
+						 "CONSTRAINT        fault_id_pk PRIMARY KEY(id)"+
 						 ");";
 
 	
@@ -61,7 +61,7 @@ Connection connection;
 			boolean tableExists = false;
 			
 			while (rs.next()) {
-				if ("client".equalsIgnoreCase(rs.getString("TABLE_NAME"))) {
+				if ("fault".equalsIgnoreCase(rs.getString("TABLE_NAME"))) {
 					tableExists = true;
 					break;
 				}
@@ -72,7 +72,7 @@ Connection connection;
 
 			addFaultStatement = connection
 					.prepareStatement(
-							"INSERT INTO xxxxxxx (description_fault, date_solution_fault, what_do) " +
+							"INSERT INTO fault (description_fault, date_solution_fault, what_do) " +
 							"VALUES (?, ?, ?)");
 			deleteFaultStatement = connection
 					.prepareStatement("delete from fault where id=?");
@@ -100,7 +100,7 @@ Connection connection;
 	 * @see servis.management.ManagementInterface#get(long)
 	 */
 	
-	// @Override fytj
+@Override //fytj
 	public FaultData get(long id) {
 	
 	FaultData result = null;
@@ -119,7 +119,7 @@ Connection connection;
 	}
 }	
 
-	// @Override fytj
+@Override
 	public List<FaultData> getAll() {
 		List<FaultData> result= new ArrayList<FaultData>();
 	
@@ -136,7 +136,7 @@ Connection connection;
 	}
 	
 }
-	// @Override fytj
+@Override
 	public boolean save(FaultData obj) {
 		try {
 			addFaultStatement.setString(1, obj.getDescription_fault());
@@ -149,10 +149,10 @@ Connection connection;
 		}
 		return false;
 	}
-	// @Override fytj
+@Override 
 	public boolean delete(FaultData obj) {
 		try {
-			deleteFaultStatement.setString(1, obj.getWhat_do());
+			deleteFaultStatement.setLong(1, obj.getIdFault());
 			deleteFaultStatement.executeUpdate();
 		} catch (SQLException e){
 			e.printStackTrace();

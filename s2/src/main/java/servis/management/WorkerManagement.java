@@ -26,7 +26,7 @@ Connection connection;
 	    			"name            		varchar(32)   	not null,"+
 	   				"surname         		varchar(32)   	not null,"+
 					"address            		varchar(100)  	not null,"+
-	    			"phone	 	    		int           	not null,"+
+	    			"phone	 	    		varchar(10)          	not null,"+
 	    			"comments            	varchar(120),"+
 					"CONSTRAINT				worker_id_pk PRIMARY KEY(id)"+
 					");";
@@ -73,7 +73,7 @@ Connection connection;
 							"INSERT INTO worker (name, surname, address, phone) " +
 							"VALUES (?, ?, ?, ?)");
 			deleteWorkerDataStatement = connection
-					.prepareStatement("delete from worker where surname=?");
+					.prepareStatement("delete from worker where idl=?");
 			getAllWorkerDataStatement = connection
 					.prepareStatement("select * from worker");
 			getWorkerDataByIdStatement = connection
@@ -99,7 +99,7 @@ Connection connection;
 		getWorkerDataByIdStatement.setLong(1, id);
 		ResultSet rs = getWorkerDataByIdStatement.executeQuery();
 		while(rs.next()){
-			result = new WorkerData(rs.getString("name"),rs.getString("surname"),rs.getString("address"),rs.getInt("phone"));
+			result = new WorkerData(rs.getString("name"),rs.getString("surname"),rs.getString("address"),rs.getString("phone"));
 			break;
 		}
 		return result;
@@ -116,7 +116,7 @@ Connection connection;
 	try {
 		ResultSet rs= getAllWorkerDataStatement.executeQuery();
 		while(rs.next())
-			result.add(new WorkerData(rs.getString("name"),rs.getString("surname"),rs.getString("address"),rs.getInt("phone")));
+			result.add(new WorkerData(rs.getString("name"),rs.getString("surname"),rs.getString("address"),rs.getString("phone")));
 		
 		return result;
 		
@@ -132,7 +132,7 @@ Connection connection;
 			addWorkerDataStatement.setString(1, obj.getName());
 			addWorkerDataStatement.setString(2, obj.getSurname());
 			addWorkerDataStatement.setString(3, obj.getAddress());
-			addWorkerDataStatement.setInt(4, obj.getPhone());
+			addWorkerDataStatement.setString(4, obj.getPhone());
 			return addWorkerDataStatement.execute();
 		} catch (SQLException e){
 			e.printStackTrace();
@@ -142,7 +142,7 @@ Connection connection;
 	// @Override fytj
 	public boolean delete(WorkerData obj) {
 		try {
-			deleteWorkerDataStatement.setString(1, obj.getAddress());
+			deleteWorkerDataStatement.setLong(1, obj.getId());
 			deleteWorkerDataStatement.executeUpdate();
 		} catch (SQLException e){
 			e.printStackTrace();

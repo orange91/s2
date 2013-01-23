@@ -75,7 +75,7 @@ private Connection connection;
 							"INSERT INTO client (name, surname, address, phone) " +
 							"VALUES (?, ?, ?, ?)");
 			deleteClientDataStatement = connection
-					.prepareStatement("delete from client where surname=?");
+					.prepareStatement("delete from client where id=?");
 			getAllClientDataStatement = connection
 					.prepareStatement("select * from client");
 			getClientDataByIdStatement = connection
@@ -143,7 +143,7 @@ public ClientData get(long id) {
 @Override //fytj
 	public boolean delete(ClientData obj) {
 		try {
-			deleteClientDataStatement.setString(1, obj.getAddress());
+			deleteClientDataStatement.setLong(1, obj.getId());
 			deleteClientDataStatement.executeUpdate();
 		} catch (SQLException e){
 			e.printStackTrace();

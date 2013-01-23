@@ -4,11 +4,11 @@ package servis.worker;
 
 public class WorkerData {
 	
-	private int id;
+	private long id;
 	private String name;
 	private String surname;
 	private String address;
-	private int phone;
+	private String phone;
 	
 	
 	/*	﻿CREATE TABLE worker
@@ -23,21 +23,25 @@ public class WorkerData {
 	);
 
 	 */
-	public WorkerData(String name, String surname, String address, int phone) {
+	public WorkerData(String name, String surname, String address, String phone) {
 		this.name = name;
 		this.surname = surname;
 		this.address = address;
 		this.phone = phone;
 	}
 	
+	public WorkerData(long id){
+		this.id = id;
+	}
+	
 	public WorkerData(String surname) {
 		this.surname = surname;
 	}
 	
-	public long getIdWorker() {
+	public long getId() {
 		return id;
 	}
-	public void setIdWorker(int id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -52,10 +56,10 @@ public class WorkerData {
 	public void setSurname(String surname) {
 		this.surname = surname;
 	}
-	public int getPhone() {
+	public String getPhone() {
 		return phone;
 	}
-	public void setPhone(int phone) {
+	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 	public String getAddress() {

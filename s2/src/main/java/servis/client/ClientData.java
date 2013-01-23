@@ -21,6 +21,7 @@ public class ClientData {
 
 	 */
 	public ClientData(String name, String surname, String address, String phone) {
+		
 		this.name = name;
 		this.surname = surname;
 		this.address = address;
@@ -31,6 +32,10 @@ public class ClientData {
 		this.surname = surname;
 	}
 	
+	public ClientData(long id){
+		this.id = id;
+	}
+
 	public long getId() {
 		return id;
 	}

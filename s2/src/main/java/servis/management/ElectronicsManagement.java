@@ -31,15 +31,15 @@ Connection connection;
 	private String password = "postgres";
 	private String login = "postgres";
 
-	String createTable =" CREATE TABLE electronics" +
+	String createTable ="CREATE TABLE electronics (" +
 						"id				 serial,"+
-    "nr_serial        varchar(20)    not null,"+
+						"nr_serial       varchar(20)    not null,"+
     "model            varchar(20)    not null,"+
-    "extend           varchar(200),"+
     "e_name           varchar(30)    not null,"+
     "id_client		 int 			not null,"+
 	"id_worker 		 int 			not null,"+
 	"id_fault		 int			not null,"+
+	"CONSTRAINT      electronics_id_pk PRIMARY KEY(id)"+
 	");";
 			
 	Statement statement;
@@ -58,7 +58,7 @@ Connection connection;
 			boolean tableExists = false;
 			
 			while (rs.next()) {
-				if ("client".equalsIgnoreCase(rs.getString("TABLE_NAME"))) {
+				if ("electronics".equalsIgnoreCase(rs.getString("TABLE_NAME"))) {
 					tableExists = true;
 					break;
 				}
@@ -69,7 +69,7 @@ Connection connection;
 
 			addElectronicsDataStatement = connection
 					.prepareStatement(
-							"INSERT INTO elecronics (nr_serial, model, e_name, id_client, id_worker, id_fault) " +
+							"INSERT INTO electronics (nr_serial, model, e_name, id_client, id_worker, id_fault) " +
 							"VALUES (?, ?, ?, ?, ?, ?)");
 			deleteElectronicsDataStatement=connection
 					.prepareStatement("delete from electronics where id=?");
@@ -117,7 +117,7 @@ Connection connection;
 		id_fault		 int			not null,
 	 */
 	
-	// @Override fytj
+@Override 
 	public ElectronicsData get(long id) {
 	
 		ElectronicsData result = null;
@@ -136,7 +136,7 @@ Connection connection;
 	}
 }	
 
-	// @Override fytj
+@Override 
 	public List<ElectronicsData> getAll() {
 		List<ElectronicsData> result= new ArrayList<ElectronicsData>();
 	
@@ -153,7 +153,7 @@ Connection connection;
 	}
 	
 }
-	// @Override fytj
+@Override
 	public boolean save(ElectronicsData obj) {
 		try {
 			addElectronicsDataStatement.setString(1, obj.getNr_serial());
@@ -161,17 +161,17 @@ Connection connection;
 			addElectronicsDataStatement.setString(3, obj.getE_name());
 			addElectronicsDataStatement.setInt(4, obj.getId_client());
 			addElectronicsDataStatement.setInt(5, obj.getId_worker());
-			addElectronicsDataStatement.setInt(5, obj.getId_fault());
+			addElectronicsDataStatement.setInt(6, obj.getId_fault());
 			return addElectronicsDataStatement.execute();
 		} catch (SQLException e){
 			e.printStackTrace();
 		}
 		return false;
 	}
-	// @Override fytj
+@Override
 	public boolean delete(ElectronicsData obj) {
 		try {
-			deleteElectronicsDataStatement.setString(1, obj.getE_name());
+			deleteElectronicsDataStatement.setLong(1, obj.getId());
 			deleteElectronicsDataStatement.executeUpdate();
 		} catch (SQLException e){
 			e.printStackTrace();

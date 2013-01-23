@@ -9,6 +9,7 @@ public interface ManagementInterface<TEntity> {
 	public List<TEntity> getAll();
 	public boolean save(TEntity obj);
 	public boolean delete(TEntity obj);
+	//public boolean delete(long id);
 	//ClientData getIdClient(long id_client);
 
 }

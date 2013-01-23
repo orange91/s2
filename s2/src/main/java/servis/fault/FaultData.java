@@ -16,13 +16,13 @@ public class FaultData {
 (
     id_fault        		serial,
     description_fault       varchar(500)    not null,
-    date_solution_fault    	date,
+    date_solution_fault    	varchar(20),
     what_do       			varchar(300),
     extend            		varchar(200),
     CONSTRAINT        fault_id_fault_pk PRIMARY KEY(id_fault)
 );
 	 */
-	private int id;
+	private long id;
 	private String description_fault;
 	private String date_solution_fault;
 	private String what_do;
@@ -35,7 +35,7 @@ public class FaultData {
 		
 	}
 	
-	public FaultData(int id) {
+	public FaultData(long id) {
 		this.id = id;
 	}
 	
