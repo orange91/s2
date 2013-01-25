@@ -41,8 +41,13 @@ public class Main {
 	//	ClientData client1 = new ClientData(6);
 	//	client.delete(client1);
 		
+		
+		System.out.println(client.get(8));
+		
+		
 		FaultData fault1 = new FaultData(32);
 		fault.delete(fault1);
+	//	WorkerData 
 		
 	}
 

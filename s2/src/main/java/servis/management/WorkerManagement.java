@@ -73,7 +73,7 @@ Connection connection;
 							"INSERT INTO worker (name, surname, address, phone) " +
 							"VALUES (?, ?, ?, ?)");
 			deleteWorkerDataStatement = connection
-					.prepareStatement("delete from worker where idl=?");
+					.prepareStatement("delete from worker where id=?");
 			getAllWorkerDataStatement = connection
 					.prepareStatement("select * from worker");
 			getWorkerDataByIdStatement = connection
@@ -90,7 +90,7 @@ Connection connection;
 	}
 	
 	
-	// @Override fytj
+	@Override
 	public WorkerData get(long id) {
 	
 	WorkerData result = null;
@@ -109,7 +109,7 @@ Connection connection;
 	}
 }	
 
-	// @Override fytj
+	@Override
 	public List<WorkerData> getAll() {
 		List<WorkerData> result= new ArrayList<WorkerData>();
 	
@@ -126,7 +126,7 @@ Connection connection;
 	}
 	
 }
-	// @Override fytj
+@Override 
 	public boolean save(WorkerData obj) {
 		try {
 			addWorkerDataStatement.setString(1, obj.getName());
@@ -139,7 +139,7 @@ Connection connection;
 		}
 		return false;
 	}
-	// @Override fytj
+	@Override 
 	public boolean delete(WorkerData obj) {
 		try {
 			deleteWorkerDataStatement.setLong(1, obj.getId());

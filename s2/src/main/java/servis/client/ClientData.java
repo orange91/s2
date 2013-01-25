@@ -67,4 +67,10 @@ public class ClientData {
 		this.address = address;
 	}
 
+	public static boolean delete(ClientData del) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+
 }
